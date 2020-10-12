@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import Jumbotron from "./components/Jumbotron";
 import Card from "./components/Card";
@@ -8,37 +8,52 @@ import db from "./db";
 
 function App() {
   
+  const [employees, setEmployees] = useState();
+
   const populateEmployees = (employees) => {
-    let employeesArray = [];
+    console.log(employees);
     if (employees) {
-      employeesArray = employees;
-    } else {
-      employeesArray = db.employees;
+      return employees.map((employee, index) => {
+        return <Card key={index} {...employee}/>;
+      });
     }
-  
-    console.log("populateEmployees");
-    console.log(employeesArray);
-  
-    return employeesArray.map((employee, index) => {
-      return <Card key={index} {...employee}/>;
-    });
   }
+
+  useEffect(() => {
+    setEmployees(db.employees);
+  }, []);
   
   const filterByName = (name) => {
     console.log(name);
-    const filteredArray = db.employees.filter((employee) => {
+    const filteredEmployees = db.employees.filter((employee) => {
       console.log(employee);
       return ((employee.firstName === name) || (employee.lastName === name));
     });
   
-    console.log(filteredArray);
-    return filteredArray;
+    setEmployees(filteredEmployees);
   }
   
   const sortByName = () => {
     console.log("sortByName");
-    const employees = [...db.employees];
-    return employees.sort();
+    const sortedEmployees = [...employees];
+    sortedEmployees.sort((employeeA, employeeB) => {
+      const firstNameA = employeeA.firstName.toUpperCase();
+      const firstNameB = employeeB.firstName.toUpperCase();
+
+      if (firstNameA < firstNameB) return -1;
+      if (firstNameA > firstNameB) return 1;
+      if (firstNameA === firstNameB) {
+        const lastNameA = employeeA.lastName.toUpperCase();
+        const lastNameB = employeeB.lastName.toUpperCase();
+        if (lastNameA < lastNameB) return -1;
+        if (lastNameA > lastNameB) return 1;
+      }
+
+      return 0;
+    });
+    console.log("sortedEmployees");
+    console.log(sortedEmployees);
+    setEmployees(sortedEmployees);
   }
 
   return (
@@ -48,12 +63,12 @@ function App() {
         <div className="row">
           <div className="col-md-4">
             <Sidepane 
-              populateFilterByName={(name) => populateEmployees(filterByName(name))} 
-              populateSortByName={() => populateEmployees(sortByName())}
+              filterByName={(name) => filterByName(name)} 
+              sortByName={sortByName}
             />  
           </div>
           <div id="employees-div" className="col-md-8">
-            {populateEmployees()}  
+            {populateEmployees(employees)}  
           </div>
         </div>
       </div>

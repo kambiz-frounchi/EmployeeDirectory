@@ -20,8 +20,8 @@ function Sidepane(props) {
                         aria-describedby="basic-addon2"
                         onChange = {e => setNameFilter(e.target.value)}/>
                     <div className="input-group-append">
-                        <button id="filter-btn" className="btn btn-outline-secondary" type="button" onClick={() => {props.populateFilterByName(name)}}>Filter</button>
-                        <button id="sort-btn" className="btn btn-outline-secondary" type="button" onClick={props.populateSortByName}>Sort</button>
+                        <button id="filter-btn" className="btn btn-outline-secondary" type="button" onClick={() => {props.filterByName(name)}}>Filter</button>
+                        <button id="sort-btn" className="btn btn-outline-secondary" type="button" onClick={props.sortByName}>Sort</button>
                     </div>
                 </div>
             </nav>
