@@ -9,7 +9,6 @@ class Employee {
     }
 }
 
-
 const employees = [];
 
 employees.push(new Employee ("Kambiz", "Frounchi", "Senior Software Engineer", "Brad", "Lawrence", "R&D"));

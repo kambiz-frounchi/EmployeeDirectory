@@ -1,16 +1,16 @@
 import React, { useState } from "react";
+import "./style.css";
 
 function Sidepane(props) {
     const [name, setName] = useState();
 
     const setNameFilter = (value) => {
-        console.log(value);
         setName(value);
     }
 
     return (
         <div>
-            <nav id="sidebarMenu" className="d-md-block bg-light sidebar collapse">
+            <nav className="d-md-block bg-light sidebar">
                 <div className="input-group">
                     <input
                         type="text"
@@ -21,7 +21,10 @@ function Sidepane(props) {
                         onChange = {e => setNameFilter(e.target.value)}/>
                     <div className="input-group-append">
                         <button id="filter-btn" className="btn btn-outline-secondary" type="button" onClick={() => {props.filterByName(name)}}>Filter</button>
+                        <button id="sort-btn" className="btn btn-outline-secondary" type="button" onClick={props.removeFilterByName}>Undo Filter</button>
                         <button id="sort-btn" className="btn btn-outline-secondary" type="button" onClick={props.sortByName}>Sort</button>
+                        <button id="sort-btn" className="btn btn-outline-secondary" type="button" onClick={props.sortByNameDescending}>Sort Descending</button>
+
                     </div>
                 </div>
             </nav>

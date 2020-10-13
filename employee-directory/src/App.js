@@ -11,7 +11,6 @@ function App() {
   const [employees, setEmployees] = useState();
 
   const populateEmployees = (employees) => {
-    console.log(employees);
     if (employees) {
       return employees.map((employee, index) => {
         return <Card key={index} {...employee}/>;
@@ -22,19 +21,23 @@ function App() {
   useEffect(() => {
     setEmployees(db.employees);
   }, []);
-  
-  const filterByName = (name) => {
-    console.log(name);
-    const filteredEmployees = db.employees.filter((employee) => {
-      console.log(employee);
-      return ((employee.firstName === name) || (employee.lastName === name));
-    });
-  
-    setEmployees(filteredEmployees);
+
+const filterByName = (name) => {
+  const filteredEmployees = db.employees.filter((employee) => {
+    const nameCaps = name.toUpperCase();
+    const firstNameCaps = employee.firstName.toUpperCase();
+    const lastNameCaps = employee.lastName.toUpperCase();
+    return (firstNameCaps.includes(nameCaps) || lastNameCaps.includes(nameCaps));
+  });
+
+  setEmployees(filteredEmployees);
+}
+
+  const removeFilterByName = () => {
+    setEmployees(db.employees);
   }
   
   const sortByName = () => {
-    console.log("sortByName");
     const sortedEmployees = [...employees];
     sortedEmployees.sort((employeeA, employeeB) => {
       const firstNameA = employeeA.firstName.toUpperCase();
@@ -51,10 +54,30 @@ function App() {
 
       return 0;
     });
-    console.log("sortedEmployees");
-    console.log(sortedEmployees);
+
     setEmployees(sortedEmployees);
   }
+
+  const sortByNameDescending = () => {
+    const sortedEmployees = [...employees];
+    sortedEmployees.sort((employeeA, employeeB) => {
+      const firstNameA = employeeA.firstName.toUpperCase();
+      const firstNameB = employeeB.firstName.toUpperCase();
+
+      if (firstNameA < firstNameB) return 1;
+      if (firstNameA > firstNameB) return -1;
+      if (firstNameA === firstNameB) {
+        const lastNameA = employeeA.lastName.toUpperCase();
+        const lastNameB = employeeB.lastName.toUpperCase();
+        if (lastNameA < lastNameB) return 1;
+        if (lastNameA > lastNameB) return -1;
+      }
+
+      return 0;
+    });
+
+    setEmployees(sortedEmployees);
+  };
 
   return (
     <div className="App">
@@ -65,6 +88,8 @@ function App() {
             <Sidepane 
               filterByName={(name) => filterByName(name)} 
               sortByName={sortByName}
+              removeFilterByName={removeFilterByName}
+              sortByNameDescending ={sortByNameDescending}
             />  
           </div>
           <div id="employees-div" className="col-md-8">
