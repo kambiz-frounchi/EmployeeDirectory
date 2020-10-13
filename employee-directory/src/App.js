@@ -22,21 +22,24 @@ function App() {
     setEmployees(db.employees);
   }, []);
 
-const filterByName = (name) => {
-  const filteredEmployees = db.employees.filter((employee) => {
-    const nameCaps = name.toUpperCase();
-    const firstNameCaps = employee.firstName.toUpperCase();
-    const lastNameCaps = employee.lastName.toUpperCase();
-    return (firstNameCaps.includes(nameCaps) || lastNameCaps.includes(nameCaps));
-  });
+  //find any employees that include the input name in their first or last name
+  const filterByName = (name) => {
+    const filteredEmployees = db.employees.filter((employee) => {
+      const nameCaps = name.toUpperCase();
+      const firstNameCaps = employee.firstName.toUpperCase();
+      const lastNameCaps = employee.lastName.toUpperCase();
+      return (firstNameCaps.includes(nameCaps) || lastNameCaps.includes(nameCaps));
+    });
 
-  setEmployees(filteredEmployees);
-}
+    setEmployees(filteredEmployees);
+  }
 
+  //undo name filter
   const removeFilterByName = () => {
     setEmployees(db.employees);
   }
   
+  //sort in ascending order using firstName and then last name
   const sortByName = () => {
     const sortedEmployees = [...employees];
     sortedEmployees.sort((employeeA, employeeB) => {
@@ -58,6 +61,7 @@ const filterByName = (name) => {
     setEmployees(sortedEmployees);
   }
 
+  //sort in descending order using first name and then last name
   const sortByNameDescending = () => {
     const sortedEmployees = [...employees];
     sortedEmployees.sort((employeeA, employeeB) => {
